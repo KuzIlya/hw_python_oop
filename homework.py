@@ -34,7 +34,7 @@ class Training:
 
     M_IN_KM: Final[int] = 1000
     HOUR_IN_MINUTES: Final[int] = 60
-    LEN_STEP: float = 0.65
+    LEN_STEP: ClassVar[float] = 0.65
 
     def __init__(self,
                  action: float,
@@ -124,7 +124,7 @@ class SportsWalking(Training):
 
 class Swimming(Training):
     """Training: Swimming."""
-    LEN_STEP: float = 1.38
+    LEN_STEP: ClassVar[float] = 1.38
     SWIM_COEFFICIENT_1: Final[float] = 1.1
     SWIM_COEFFICIENT_2: Final[int] = 2
 
