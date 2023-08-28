@@ -4,7 +4,7 @@ that processes data for three types of training: running, walking and swimming.
 """
 
 from dataclasses import asdict, dataclass
-from typing import ClassVar, Final, TypeVar
+from typing import ClassVar, Final, Sequence, Union
 
 
 @dataclass
@@ -53,9 +53,7 @@ class Training:
     def get_mean_speed(self) -> float:
         """Get the mean speed in km/h."""
 
-        distance: float = self.get_distance()
-
-        return distance / self.duration
+        return self.get_distance() / self.duration
 
     def get_spent_calories(self) -> float:
         """Get the number of calories consumed."""
@@ -154,21 +152,18 @@ class Swimming(Training):
                 * self.SWIM_COEFFICIENT_2 * self.weight * self.duration)
 
 
-T = TypeVar('T', int, float)
-
-
-def read_package(workout_type: str, data: list[T]) -> Training:
+def read_package(workout_type: str,
+                 data: Sequence[Union[int, float]]) -> Training:
     """ Read data from sensors."""
 
     sport_types: dict[str, type[Training]] = {'SWM': Swimming,
                                               'RUN': Running,
                                               'WLK': SportsWalking}
 
-    try:
-        return sport_types[workout_type](*data)
-
-    except ValueError:
+    if workout_type not in sport_types:
         raise ValueError('А здесь понятный текст, что пошло нет так') from None
+
+    return sport_types[workout_type](*data)
 
 
 def main(training: Training) -> None:
