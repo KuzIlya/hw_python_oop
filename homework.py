@@ -4,7 +4,7 @@ that processes data for three types of training: running, walking and swimming.
 """
 
 from dataclasses import asdict, dataclass
-from typing import ClassVar, TypeVar
+from typing import ClassVar, Final, TypeVar
 
 
 @dataclass
@@ -32,9 +32,9 @@ class InfoMessage:
 class Training:
     """Basic training class."""
 
-    M_IN_KM: int = 1000
+    M_IN_KM: Final[int] = 1000
+    HOUR_IN_MINUTES: Final[int] = 60
     LEN_STEP: float = 0.65
-    HOUR_IN_MINUTES: int = 60
 
     def __init__(self,
                  action: float,
@@ -77,8 +77,8 @@ class Training:
 class Running(Training):
     """Training: Running."""
 
-    CALORIES_MEAN_SPEED_MULTIPLIER: int = 18
-    CALORIES_MEAN_SPEED_SHIFT: float = 1.79
+    CALORIES_MEAN_SPEED_MULTIPLIER: Final[int] = 18
+    CALORIES_MEAN_SPEED_SHIFT: Final[float] = 1.79
 
     def get_spent_calories(self) -> float:
         """Get the number of calories consumed while running.."""
@@ -94,10 +94,10 @@ class Running(Training):
 class SportsWalking(Training):
     """Training: sports walking."""
 
-    WALK_COEFFICIENT_1: float = 0.035
-    WALK_COEFFICIENT_2: float = 0.029
-    KMH_in_MS: float = 0.278
-    SM_in_M: int = 100
+    WALK_COEFFICIENT_1: Final[float] = 0.035
+    WALK_COEFFICIENT_2: Final[float] = 0.029
+    KMH_IN_MS: Final[float] = 0.278
+    SM_IN_M: Final[int] = 100
 
     def __init__(self,
                  action: int,
@@ -111,9 +111,9 @@ class SportsWalking(Training):
         """Get the number of calories consumed while walking."""
 
         mean_speed_kmh: float = self.get_mean_speed()
-        mean_speed_ms: float = mean_speed_kmh * self.KMH_in_MS
+        mean_speed_ms: float = mean_speed_kmh * self.KMH_IN_MS
 
-        height_m: float = self.height / self.SM_in_M
+        height_m: float = self.height / self.SM_IN_M
 
         duration_m: float = self.duration * self.HOUR_IN_MINUTES
 
@@ -125,8 +125,8 @@ class SportsWalking(Training):
 class Swimming(Training):
     """Training: Swimming."""
     LEN_STEP: float = 1.38
-    SWIM_COEFFICIENT_1: float = 1.1
-    SWIM_COEFFICIENT_2: int = 2
+    SWIM_COEFFICIENT_1: Final[float] = 1.1
+    SWIM_COEFFICIENT_2: Final[int] = 2
 
     def __init__(self,
                  action: int,
